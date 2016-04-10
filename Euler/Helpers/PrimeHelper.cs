@@ -48,7 +48,7 @@ namespace Euler.Helpers
 
             long max = (long)Math.Sqrt(number);
 
-            for (long factor = 1; factor <= max; ++factor)
+            for (long factor = 2; factor <= max; factor++)
             { 
                 if (number % factor == 0)
                 {

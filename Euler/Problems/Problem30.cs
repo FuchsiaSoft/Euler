@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Euler.Problems
@@ -46,19 +47,36 @@ Find the sum of all the numbers that can be written as the sum of fifth powers o
         {
             int result = 0;
 
-            for (int i = 2; i < 1000000; i++)
-            {
-                IEnumerable<int> digits = NumberHelper.GetDigits(i);
+            Parallel.For(2, 1000000, i =>
+              {
+                  IEnumerable<int> digits = NumberHelper.GetDigits(i);
 
-                int sumOfPowers = 0;
+                  int sumOfPowers = 0;
 
-                foreach (int digit in digits)
-                {
-                    sumOfPowers += (int)Math.Pow(digit, 5);
-                }
+                  foreach (int digit in digits)
+                  {
+                      sumOfPowers += (int)Math.Pow(digit, 5);
+                  }
 
-                if (sumOfPowers == i) result += i;
-            }
+                  if (sumOfPowers == i)
+                  {
+                      Interlocked.Add(ref result, i);
+                  }
+              });
+
+            //for (int i = 2; i < 1000000; i++)
+            //{
+            //    IEnumerable<int> digits = NumberHelper.GetDigits(i);
+
+            //    int sumOfPowers = 0;
+
+            //    foreach (int digit in digits)
+            //    {
+            //        sumOfPowers += (int)Math.Pow(digit, 5);
+            //    }
+
+            //    if (sumOfPowers == i) result += i;
+            //}
 
             return result.ToString("0");
         }
